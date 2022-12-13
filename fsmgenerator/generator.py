@@ -190,7 +190,7 @@ class Generator():
         self._randomizeInputAssignment()
         if self._args.python_output:
             self._generatePythonCode()
-        if self._args.scl_300:
+        if self._args.scl_300_output:
             self._generateScl300Code()
         if self._args.scl_1500_output:
             self._generateScl1500Code()
