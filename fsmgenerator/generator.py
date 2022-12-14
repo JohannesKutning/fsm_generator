@@ -72,17 +72,17 @@ class Generator():
     def _addArgumentMaxNetLenght( self ):
         self._parser.add_argument( '-l', '--max-net-length',
                 type = int, default = 5,
-                help = 'Maximal transition net length.' )
+                help = 'Maximal logic operations network length.' )
 
     def _addArgumentMinNetProbability( self ):
         self._parser.add_argument( '-m', '--min-net-prob',
-                type = float, default = 0.1,
+                type = Generator.float_range( 0.01, 0.99 ), default = 0.1,
                 help = 'Minimal net transition probability.' )
 
     def _addArgumentIterations( self ):
         self._parser.add_argument( '-i', '--iterations',
                 type = str, default = 16 * 1024,
-                help = '' )
+                help = 'Amount of input words in the input stimulus.' )
 
     def _addArgumentPythonOutput( self ):
         self._parser.add_argument( '--python-output',
@@ -282,5 +282,20 @@ class Generator():
         code.write( '\n' )
         code.write( 'controlLoop( size, seed )\n' )
 
+    @staticmethod
+    def float_range( minimum : float, maximum : float ):
+        def float_range_checker(arg):
+            try:
+                f = float( arg )
+            except ValueError:
+                raise argparse.ArgumentTypeError(
+                        'must be a floating point number' )
+
+            if f < minimum or f > maximum:
+                raise argparse.ArgumentTypeError(
+                        'must be in range [{:f} .. {:f}}'.format( minimum, maximum ) )
+            return f
+
+        return float_range_checker
 
 
